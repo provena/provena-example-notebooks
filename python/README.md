@@ -1,6 +1,6 @@
-# nbic-demonstrator
+# Provena notebook examples in Python
 
-Toy example from stripped down NBIC workflow demonstrating the usage of Provena for registering notebook based provenance.
+This folder contains simple examples of workflows demonstrating the usage of Provena for registering notebook based provenance.
 
 ## Instructions
 
@@ -18,9 +18,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Run the `hourly_FFDI.ipynb` notebook.
 
-## Workflow configuration
+## Notebooks available 
+
+### `hourly_FFDI.ipynb` notebook.
+
+#### Workflow configuration
 
 The `workflow_config.py` file contains the Pydantic model which the specified workflow file must satisfy.
 
