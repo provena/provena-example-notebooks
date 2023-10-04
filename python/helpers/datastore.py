@@ -2,7 +2,7 @@ from mdsisclienttools.auth.TokenManager import BearerAuth
 import requests
 from typing import Dict, Any, Optional
 
-from registry import check_response
+from helpers.registry import check_response
 
 def register_dataset(datastore_endpoint: str, dataset_metadata: Dict[str, Any], auth: BearerAuth) -> Dict[str, Any]:
     postfix = "/register/mint-dataset"

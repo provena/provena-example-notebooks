@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import json
-import registry
+import helpers.registry as registry
 from mdsisclienttools.auth.TokenManager import BearerAuth
 from typing import Callable
 
