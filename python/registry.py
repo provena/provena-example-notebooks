@@ -55,3 +55,8 @@ def fetch_dataset_template(registry_endpoint: str, id: str, auth: BearerAuth) ->
     postfix = "/registry/entity/dataset_template/fetch"
     endpoint = registry_endpoint + postfix
     return generic_fetch(endpoint=endpoint, id=id, auth=auth)
+
+
+def fetch_dataset_metadata(registry_endpoint, id: str, auth: BearerAuth) -> Dict[str, Any]:
+    fetch_response = fetch_dataset(registry_endpoint=registry_endpoint, id=id, auth=auth)
+    return fetch_response["collection_format"]
