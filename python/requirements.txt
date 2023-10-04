@@ -6,3 +6,5 @@ prov[dot]
 graphviz
 networkx
 pygraphviz
+python-docx
+pyyaml
