@@ -1,17 +1,17 @@
 {
-  "inputs": {
-    "hourly_temperature": "10378.1/1745829",
-    "hourly_temperature_template": "10378.1/1745821"    
-  },
-  "outputs": {
-    "hourly_jyi": "10378.1/1745831",
-    "hourly_jyi_template": "10378.1/1745822"
-  },
-  "associations": {
-    "person": "10378.1/1741731",
-    "organisation": "10378.1/1741732"
-  },
-  "workflow_configuration": {
-    "workflow_template": "10378.1/1745827"
-  }
+    "inputs": {
+        "hourly_temperature": "10378.1/1745829",
+        "hourly_temperature_template": "10378.1/1745821"
+    },
+    "outputs": {
+        "hourly_jyi": "10378.1/1745831",
+        "hourly_jyi_template": "10378.1/1745822"
+    },
+    "associations": {
+        "person": "10378.1/1767802",
+        "organisation": "10378.1/1758950"
+    },
+    "workflow_configuration": {
+        "workflow_template": "10378.1/1745827"
+    }
 }

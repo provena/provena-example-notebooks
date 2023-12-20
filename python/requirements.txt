@@ -3,6 +3,6 @@ pydantic
 mdsisclienttools
 requests
 prov[dot]
-graphviz
 networkx
-pygraphviz
+boto3==1.27.1
+python-dotenv
