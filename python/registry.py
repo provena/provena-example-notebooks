@@ -27,6 +27,17 @@ def generic_fetch(endpoint: str, id: str, auth: BearerAuth) -> Dict[str, Any]:
     return response.json()["item"]
 
 
+def generic_post(endpoint: str, data: Any, auth: BearerAuth) -> Dict[str, Any]:
+    print(f"Fetching from registry using post")
+
+    # Make request and validate response
+    response = requests.post(endpoint, json=data, auth=auth)
+    check_response(response=response, status_check=True)
+
+    # Return the item from the response
+    return response.json()
+
+
 def fetch_dataset(registry_endpoint: str, id: str, auth: BearerAuth) -> Dict[str, Any]:
     postfix = "/registry/entity/dataset/fetch"
     endpoint = registry_endpoint + postfix
@@ -55,3 +66,38 @@ def fetch_dataset_template(registry_endpoint: str, id: str, auth: BearerAuth) ->
     postfix = "/registry/entity/dataset_template/fetch"
     endpoint = registry_endpoint + postfix
     return generic_fetch(endpoint=endpoint, id=id, auth=auth)
+
+
+
+def list_datasets(registry_endpoint: str, data: Any, auth: BearerAuth) -> Dict[str, Any]:
+    postfix = "/registry/entity/dataset/list"
+    endpoint = registry_endpoint + postfix
+    return generic_post(endpoint=endpoint, data=data, auth=auth)
+
+
+def list_model_runs(registry_endpoint: str, data: Any, auth: BearerAuth) -> Dict[str, Any]:
+    postfix = "/registry/activity/model_run/list"
+    endpoint = registry_endpoint + postfix
+    return generic_post(endpoint=endpoint, data=data, auth=auth)
+
+def list_persons(registry_endpoint: str, data: Any, auth: BearerAuth) -> Dict[str, Any]:
+    postfix = "/registry/agent/person/list"
+    endpoint = registry_endpoint + postfix
+    return generic_post(endpoint=endpoint, data=data, auth=auth)
+
+def list_organisations(registry_endpoint: str, data: Any, auth: BearerAuth) -> Dict[str, Any]:
+    postfix = "/registry/agent/organisation/list"
+    endpoint = registry_endpoint + postfix
+    return generic_post(endpoint=endpoint, data=data, auth=auth)
+
+
+def list_model_run_workflow_templates(registry_endpoint: str, data: Any, auth: BearerAuth) -> Dict[str, Any]:
+    postfix = "/registry/entity/model_run_workflow/list"
+    endpoint = registry_endpoint + postfix
+    return generic_post(endpoint=endpoint, data=data, auth=auth)
+
+
+def list_dataset_templates(registry_endpoint: str, data: Any, auth: BearerAuth) -> Dict[str, Any]:
+    postfix = "/registry/entity/dataset_template/list"
+    endpoint = registry_endpoint + postfix
+    return generic_post(endpoint=endpoint, data=data, auth=auth)
