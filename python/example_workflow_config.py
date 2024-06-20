@@ -1,11 +1,6 @@
 from pydantic import BaseModel
 import json
-import registry
-from mdsisclienttools.auth.TokenManager import BearerAuth
-from typing import Callable
-
-
-GetAuthFunction = Callable[[], BearerAuth]
+from provenaclient.modules import Registry
 
 
 class ModelOutputs(BaseModel):
@@ -16,7 +11,7 @@ class ModelOutputs(BaseModel):
     hourly_jyi: str
     hourly_jyi_template: str
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, registry: Registry) -> bool:
         print("Validating registered output datasets...")
 
         datasets = [
@@ -29,8 +24,7 @@ class ModelOutputs(BaseModel):
 
         for id in datasets:
             try:
-                registry.fetch_dataset(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await registry.model.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset: {id=}. Exception: {e}.")
@@ -38,8 +32,7 @@ class ModelOutputs(BaseModel):
 
         for id in templates:
             try:
-                registry.fetch_dataset_template(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await registry.model.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -62,8 +55,10 @@ class ModelInputs(BaseModel):
 
     
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, registry: Registry) -> bool:
+        print("in here.")
         print("Validating registered input datasets...")
+
 
         datasets = [
             self.hourly_temperature            
@@ -74,9 +69,11 @@ class ModelInputs(BaseModel):
         ]
 
         for id in datasets:
+            print("in loop.")
             try:
-                registry.fetch_dataset(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                print("in here.")
+                model = await registry.model.fetch(id=id)
+                print(model)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset: {id=}. Exception: {e}.")
@@ -84,8 +81,7 @@ class ModelInputs(BaseModel):
 
         for id in templates:
             try:
-                registry.fetch_dataset_template(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await registry.model.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -103,7 +99,7 @@ class ModelAssociations(BaseModel):
     # registered organisation
     organisation: str
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, registry: Registry) -> bool:
         print("Validating registered associations...")
 
         people = [
@@ -116,8 +112,7 @@ class ModelAssociations(BaseModel):
 
         for id in people:
             try:
-                registry.fetch_person(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await registry.organisation.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Person: {id=}. Exception: {e}.")
@@ -125,8 +120,7 @@ class ModelAssociations(BaseModel):
 
         for id in organisations:
             try:
-                registry.fetch_organisation(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await registry.organisation.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Organisation: {id=}. Exception: {e}.")
@@ -139,7 +133,7 @@ class ModelConfigurationEntities(BaseModel):
     # The registered model run workflow template
     workflow_template: str
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, registry: Registry) -> bool:
         print("Validating registered associations...")
 
         wf_templates = [
@@ -148,8 +142,7 @@ class ModelConfigurationEntities(BaseModel):
 
         for id in wf_templates:
             try:
-                registry.fetch_model_run_workflow_template(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await registry.model.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Model Run Workflow Template: {id=}. Exception: {e}.")
@@ -190,32 +183,32 @@ class HourlyJYIWorkflowConfig(BaseModel):
         with open(path, 'w') as f:
             f.write(json_content)
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, registry: Registry) -> bool:
         print("Validating registered Provena entities in config")
 
-        inputs = self.inputs.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        inputs = await self.inputs.validate_entities(
+            registry = registry)
 
         if not inputs:
             print("Failed inputs validation.")
             return False
 
-        outputs = self.outputs.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        outputs = await self.outputs.validate_entities(
+            registry = registry)
 
         if not outputs:
             print("Failed outputs validation.")
             return False
 
-        associations = self.associations.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        associations = await self.associations.validate_entities(
+            registry = registry)
 
         if not associations:
             print("Failed associations validation.")
             return False
 
-        model_config = self.workflow_configuration.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        model_config = await self.workflow_configuration.validate_entities(
+            registry = registry)
 
         if not model_config:
             print("Failed workflow configuration validation.")
