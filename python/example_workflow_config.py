@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import json
-from provenaclient.modules import Registry
+from provenaclient.modules import Registry, Datastore
 
 
 class ModelOutputs(BaseModel):
@@ -8,23 +8,23 @@ class ModelOutputs(BaseModel):
     # expected dataset references - the value here should be the handle
     # identifier of the Provena registered Dataset
 
-    hourly_jyi: str
-    hourly_jyi_template: str
+    output_dataset: str
+    output_dataset_template: str
 
-    async def validate_entities(self, registry: Registry) -> bool:
+    async def validate_entities(self, datastore: Datastore) -> bool:
         print("Validating registered output datasets...")
 
         datasets = [
-            self.hourly_jyi
+            self.output_dataset
         ]
 
         templates = [
-            self.hourly_jyi_template
+            self.output_dataset_template
         ]
 
         for id in datasets:
             try:
-                await registry.model.fetch(id=id)
+                await datastore.fetch_dataset(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset: {id=}. Exception: {e}.")
@@ -32,7 +32,7 @@ class ModelOutputs(BaseModel):
 
         for id in templates:
             try:
-                await registry.model.fetch(id=id)
+                await datastore.fetch_dataset(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -49,30 +49,30 @@ class ModelInputs(BaseModel):
     # each part includes the template ID and the dataset ID which matches it
 
     # The hourly temperature dataset - i.e.
-    # nbic.catalog_s3_stage1.weather.projected.to_path('AU_hourly_temperature_C.zarr')
-    hourly_temperature: str
-    hourly_temperature_template: str
+    # nbic.catalog_s3_stage1.weather.projected.to_path('AU_input_dataset_C.zarr')
+    input_dataset: str
+    input_dataset_template: str
 
     
 
-    async def validate_entities(self, registry: Registry) -> bool:
+    async def validate_entities(self, registry: Registry, datastore: Datastore) -> bool:
         print("in here.")
         print("Validating registered input datasets...")
 
 
         datasets = [
-            self.hourly_temperature            
+            self.input_dataset            
         ]
 
         templates = [
-            self.hourly_temperature_template            
+            self.input_dataset_template            
         ]
 
         for id in datasets:
             print("in loop.")
             try:
                 print("in here.")
-                model = await registry.model.fetch(id=id)
+                model = await datastore.fetch_dataset(id=id)
                 print(model)
             except Exception as e:
                 print(
@@ -81,7 +81,7 @@ class ModelInputs(BaseModel):
 
         for id in templates:
             try:
-                await registry.model.fetch(id=id)
+                await registry(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -164,11 +164,11 @@ class HourlyJYIWorkflowConfig(BaseModel):
     def dump_example(path: str) -> None:
         empty_example = HourlyJYIWorkflowConfig(
             inputs=ModelInputs(
-                hourly_temperature="TODO"                
+                input_dataset="TODO"                
             ),
             outputs=ModelOutputs(
-                hourly_jyi="TODO",
-                hourly_jyi_template="TODO"
+                output_dataset="TODO",
+                output_dataset_template="TODO"
             ),
             associations=ModelAssociations(
                 person="TODO",
@@ -183,11 +183,11 @@ class HourlyJYIWorkflowConfig(BaseModel):
         with open(path, 'w') as f:
             f.write(json_content)
 
-    async def validate_entities(self, registry: Registry) -> bool:
+    async def validate_entities(self, registry: Registry, datastore: Datastore) -> bool:
         print("Validating registered Provena entities in config")
 
         inputs = await self.inputs.validate_entities(
-            registry = registry)
+            registry= registry, datastore = datastore)
 
         if not inputs:
             print("Failed inputs validation.")
