@@ -1,0 +1,168 @@
+digraph G {
+charset="utf-8";
+rankdir=BT;
+n1 [URL="http://hdl.handle.net/10378.1/1926271", color="#0000FF", fillcolor="#9FB1FC", label="10378.1/1926271", shape=box, style=filled];
+ann1 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">ACTIVITY</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">MODEL_RUN</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann1 -> n1  [arrowhead=none, color=gray, style=dashed];
+n2 [URL="http://hdl.handle.net/10378.1/1904964", color="#808080", fillcolor="#FFFC87", label="10378.1/1904964", shape=oval, style=filled];
+ann2 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">ENTITY</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">DATASET</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann2 -> n2  [arrowhead=none, color=gray, style=dashed];
+n3 [URL="http://hdl.handle.net/10378.1/1904961", color="#808080", fillcolor="#FFFC87", label="10378.1/1904961", shape=oval, style=filled];
+ann3 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">ENTITY</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">DATASET</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann3 -> n3  [arrowhead=none, color=gray, style=dashed];
+n4 [URL="http://hdl.handle.net/10378.1/1905251", color="#808080", fillcolor="#FFFC87", label="10378.1/1905251", shape=oval, style=filled];
+ann4 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://www.w3.org/ns/prov#type">prov:type</TD>
+        <TD align="left" href="http://www.w3.org/ns/prov#Collection">prov:Collection</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">ENTITY</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">MODEL_RUN_WORKFLOW_TEMPLATE</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann4 -> n4  [arrowhead=none, color=gray, style=dashed];
+n5 [URL="http://hdl.handle.net/10378.1/1905250", color="#808080", fillcolor="#FFFC87", label="10378.1/1905250", shape=oval, style=filled];
+ann5 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">ENTITY</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">DATASET_TEMPLATE</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann5 -> n5  [arrowhead=none, color=gray, style=dashed];
+n6 [URL="http://hdl.handle.net/10378.1/1926245", color="#808080", fillcolor="#FFFC87", label="10378.1/1926245", shape=oval, style=filled];
+ann6 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">ENTITY</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">DATASET_TEMPLATE</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann6 -> n6  [arrowhead=none, color=gray, style=dashed];
+n7 [URL="http://hdl.handle.net/10378.1/1924630", color="#808080", fillcolor="#FFFC87", label="10378.1/1924630", shape=oval, style=filled];
+ann7 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">ENTITY</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">MODEL</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann7 -> n7  [arrowhead=none, color=gray, style=dashed];
+n8 [URL="http://hdl.handle.net/10378.1/1893843", fillcolor="#FED37F", label="10378.1/1893843", shape=house, style=filled];
+ann8 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">AGENT</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">PERSON</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann8 -> n8  [arrowhead=none, color=gray, style=dashed];
+n9 [URL="http://hdl.handle.net/10378.1/1893860", fillcolor="#FED37F", label="10378.1/1893860", shape=house, style=filled];
+ann9 [color=gray, fontcolor=black, fontsize=10, label=<<TABLE cellpadding="0" border="0">
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_category">item_category</TD>
+        <TD align="left">AGENT</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/item_subtype">item_subtype</TD>
+        <TD align="left">ORGANISATION</TD>
+    </TR>
+    <TR>
+        <TD align="left" href="http://hdl.handle.net/model_run/10378.1/1926271">model_run/10378.1/1926271</TD>
+        <TD align="left">True</TD>
+    </TR>
+    </TABLE>>, shape=note];
+ann9 -> n9  [arrowhead=none, color=gray, style=dashed];
+n1 -> n2  [color=red4, fontcolor=red, fontsize="10.0", label=used];
+n1 -> n7  [color=red4, fontcolor=red, fontsize="10.0", label=used];
+n1 -> n4  [color=red4, fontcolor=red, fontsize="10.0", label=used];
+n3 -> n1  [color=darkgreen, fontcolor=darkgreen, fontsize="10.0", label=wasGeneratedBy];
+b1 [color=gray, label="", shape=point];
+n1 -> b1  [arrowhead=none, color="#FED37F", fontsize="10.0", label=wasAssociatedWith];
+b1 -> n8  [color="#FED37F", fontsize="10.0"];
+b2 [color=gray, label="", shape=point];
+n1 -> b2  [arrowhead=none, color="#FED37F", fontsize="10.0", label=wasAssociatedWith];
+b2 -> n9  [color="#FED37F", fontsize="10.0"];
+n3 -> n8  [color="#FED37F", fontsize="10.0", label=wasAttributedTo];
+n4 -> n5  [fontsize="10.0", label=hadMember];
+n4 -> n6  [fontsize="10.0", label=hadMember];
+n4 -> n7  [fontsize="10.0", label=hadMember];
+n2 -> n5  [color=grey, fontsize="10.0", label=wasInfluencedBy];
+n3 -> n6  [color=grey, fontsize="10.0", label=wasInfluencedBy];
+}

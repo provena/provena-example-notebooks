@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import json
-from provenaclient.modules import Registry, Datastore
+from provenaclient import ProvenaClient
 
 
 class ModelOutputs(BaseModel):
@@ -11,7 +11,7 @@ class ModelOutputs(BaseModel):
     output_dataset: str
     output_dataset_template: str
 
-    async def validate_entities(self, datastore: Datastore) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered output datasets...")
 
         datasets = [
@@ -24,7 +24,7 @@ class ModelOutputs(BaseModel):
 
         for id in datasets:
             try:
-                await datastore.fetch_dataset(id=id)
+                await client.datastore.fetch_dataset(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset: {id=}. Exception: {e}.")
@@ -32,7 +32,7 @@ class ModelOutputs(BaseModel):
 
         for id in templates:
             try:
-                await datastore.fetch_dataset(id=id)
+                await client.registry.dataset_template.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -53,12 +53,8 @@ class ModelInputs(BaseModel):
     input_dataset: str
     input_dataset_template: str
 
-    
 
-    async def validate_entities(self, registry: Registry, datastore: Datastore) -> bool:
-        print("in here.")
-        print("Validating registered input datasets...")
-
+    async def validate_entities(self, client: ProvenaClient) -> bool:
 
         datasets = [
             self.input_dataset            
@@ -72,7 +68,7 @@ class ModelInputs(BaseModel):
             print("in loop.")
             try:
                 print("in here.")
-                model = await datastore.fetch_dataset(id=id)
+                model = await client.datastore.fetch_dataset(id=id)
                 print(model)
             except Exception as e:
                 print(
@@ -81,7 +77,7 @@ class ModelInputs(BaseModel):
 
         for id in templates:
             try:
-                await registry(id=id)
+                await client.registry.dataset_template.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -99,7 +95,7 @@ class ModelAssociations(BaseModel):
     # registered organisation
     organisation: str
 
-    async def validate_entities(self, registry: Registry) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered associations...")
 
         people = [
@@ -112,7 +108,7 @@ class ModelAssociations(BaseModel):
 
         for id in people:
             try:
-                await registry.organisation.fetch(id=id)
+                await client.registry.person.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Person: {id=}. Exception: {e}.")
@@ -120,7 +116,7 @@ class ModelAssociations(BaseModel):
 
         for id in organisations:
             try:
-                await registry.organisation.fetch(id=id)
+                await client.registry.organisation.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Organisation: {id=}. Exception: {e}.")
@@ -133,7 +129,7 @@ class ModelConfigurationEntities(BaseModel):
     # The registered model run workflow template
     workflow_template: str
 
-    async def validate_entities(self, registry: Registry) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered associations...")
 
         wf_templates = [
@@ -142,7 +138,7 @@ class ModelConfigurationEntities(BaseModel):
 
         for id in wf_templates:
             try:
-                await registry.model.fetch(id=id)
+                await client.registry.model_run_workflow.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Model Run Workflow Template: {id=}. Exception: {e}.")
@@ -183,32 +179,33 @@ class HourlyJYIWorkflowConfig(BaseModel):
         with open(path, 'w') as f:
             f.write(json_content)
 
-    async def validate_entities(self, registry: Registry, datastore: Datastore) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered Provena entities in config")
 
         inputs = await self.inputs.validate_entities(
-            registry= registry, datastore = datastore)
+            client = client
+        )
 
         if not inputs:
             print("Failed inputs validation.")
             return False
 
         outputs = await self.outputs.validate_entities(
-            registry = registry)
+            client = client)
 
         if not outputs:
             print("Failed outputs validation.")
             return False
 
         associations = await self.associations.validate_entities(
-            registry = registry)
+            client = client)
 
         if not associations:
             print("Failed associations validation.")
             return False
 
         model_config = await self.workflow_configuration.validate_entities(
-            registry = registry)
+            client = client)
 
         if not model_config:
             print("Failed workflow configuration validation.")
