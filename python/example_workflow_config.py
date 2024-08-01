@@ -65,9 +65,7 @@ class ModelInputs(BaseModel):
         ]
 
         for id in datasets:
-            print("in loop.")
             try:
-                print("in here.")
                 model = await client.datastore.fetch_dataset(id=id)
                 print(model)
             except Exception as e:

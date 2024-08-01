@@ -1,6 +1,6 @@
 ipykernel
 pydantic
-mdsisclienttools
+provenaclient
 requests
 prov[dot]
 networkx
