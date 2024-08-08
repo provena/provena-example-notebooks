@@ -1,5 +1,0 @@
-ipykernel
-pandas
-provenaclient
-requests
-python-dotenv
