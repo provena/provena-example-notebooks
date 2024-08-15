@@ -1,9 +1,8 @@
 ipykernel
-pydantic
-mdsisclienttools
-requests
+provenaclient
 prov[dot]
 networkx
 boto3==1.27.1
 python-dotenv
 pandas
+seaborn

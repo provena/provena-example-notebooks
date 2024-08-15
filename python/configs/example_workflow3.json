@@ -1,0 +1,17 @@
+{
+    "inputs": {
+        "input_dataset": "10378.1/1904964",
+        "input_dataset_template": "10378.1/1905250"
+    },
+    "outputs": {
+        "output_dataset": "10378.1/1904961",
+        "output_dataset_template": "10378.1/1926245"
+    },
+    "associations": {
+        "person": "10378.1/1893843",
+        "organisation": "10378.1/1893860"
+    },
+    "workflow_configuration": {
+        "workflow_template": "10378.1/1905251"
+    }
+}

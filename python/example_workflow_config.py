@@ -1,11 +1,6 @@
 from pydantic import BaseModel
 import json
-import registry
-from mdsisclienttools.auth.TokenManager import BearerAuth
-from typing import Callable
-
-
-GetAuthFunction = Callable[[], BearerAuth]
+from provenaclient import ProvenaClient
 
 
 class ModelOutputs(BaseModel):
@@ -13,24 +8,23 @@ class ModelOutputs(BaseModel):
     # expected dataset references - the value here should be the handle
     # identifier of the Provena registered Dataset
 
-    hourly_jyi: str
-    hourly_jyi_template: str
+    output_dataset: str
+    output_dataset_template: str
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered output datasets...")
 
         datasets = [
-            self.hourly_jyi
+            self.output_dataset
         ]
 
         templates = [
-            self.hourly_jyi_template
+            self.output_dataset_template
         ]
 
         for id in datasets:
             try:
-                registry.fetch_dataset(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await client.datastore.fetch_dataset(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset: {id=}. Exception: {e}.")
@@ -38,8 +32,7 @@ class ModelOutputs(BaseModel):
 
         for id in templates:
             try:
-                registry.fetch_dataset_template(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await client.registry.dataset_template.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -56,27 +49,25 @@ class ModelInputs(BaseModel):
     # each part includes the template ID and the dataset ID which matches it
 
     # The hourly temperature dataset - i.e.
-    # nbic.catalog_s3_stage1.weather.projected.to_path('AU_hourly_temperature_C.zarr')
-    hourly_temperature: str
-    hourly_temperature_template: str
+    # nbic.catalog_s3_stage1.weather.projected.to_path('AU_input_dataset_C.zarr')
+    input_dataset: str
+    input_dataset_template: str
 
-    
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
-        print("Validating registered input datasets...")
+    async def validate_entities(self, client: ProvenaClient) -> bool:
 
         datasets = [
-            self.hourly_temperature            
+            self.input_dataset            
         ]
 
         templates = [
-            self.hourly_temperature_template            
+            self.input_dataset_template            
         ]
 
         for id in datasets:
             try:
-                registry.fetch_dataset(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                model = await client.datastore.fetch_dataset(id=id)
+                print(model)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset: {id=}. Exception: {e}.")
@@ -84,8 +75,7 @@ class ModelInputs(BaseModel):
 
         for id in templates:
             try:
-                registry.fetch_dataset_template(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await client.registry.dataset_template.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Dataset Template: {id=}. Exception: {e}.")
@@ -103,7 +93,7 @@ class ModelAssociations(BaseModel):
     # registered organisation
     organisation: str
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered associations...")
 
         people = [
@@ -116,8 +106,7 @@ class ModelAssociations(BaseModel):
 
         for id in people:
             try:
-                registry.fetch_person(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await client.registry.person.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Person: {id=}. Exception: {e}.")
@@ -125,8 +114,7 @@ class ModelAssociations(BaseModel):
 
         for id in organisations:
             try:
-                registry.fetch_organisation(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await client.registry.organisation.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Organisation: {id=}. Exception: {e}.")
@@ -139,7 +127,7 @@ class ModelConfigurationEntities(BaseModel):
     # The registered model run workflow template
     workflow_template: str
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered associations...")
 
         wf_templates = [
@@ -148,8 +136,7 @@ class ModelConfigurationEntities(BaseModel):
 
         for id in wf_templates:
             try:
-                registry.fetch_model_run_workflow_template(
-                    registry_endpoint=registry_endpoint, id=id, auth=auth())
+                await client.registry.model_run_workflow.fetch(id=id)
             except Exception as e:
                 print(
                     f"Encountered exception while validating Model Run Workflow Template: {id=}. Exception: {e}.")
@@ -171,11 +158,11 @@ class HourlyJYIWorkflowConfig(BaseModel):
     def dump_example(path: str) -> None:
         empty_example = HourlyJYIWorkflowConfig(
             inputs=ModelInputs(
-                hourly_temperature="TODO"                
+                input_dataset="TODO"                
             ),
             outputs=ModelOutputs(
-                hourly_jyi="TODO",
-                hourly_jyi_template="TODO"
+                output_dataset="TODO",
+                output_dataset_template="TODO"
             ),
             associations=ModelAssociations(
                 person="TODO",
@@ -190,32 +177,33 @@ class HourlyJYIWorkflowConfig(BaseModel):
         with open(path, 'w') as f:
             f.write(json_content)
 
-    def validate_entities(self, registry_endpoint: str, auth: GetAuthFunction) -> bool:
+    async def validate_entities(self, client: ProvenaClient) -> bool:
         print("Validating registered Provena entities in config")
 
-        inputs = self.inputs.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        inputs = await self.inputs.validate_entities(
+            client = client
+        )
 
         if not inputs:
             print("Failed inputs validation.")
             return False
 
-        outputs = self.outputs.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        outputs = await self.outputs.validate_entities(
+            client = client)
 
         if not outputs:
             print("Failed outputs validation.")
             return False
 
-        associations = self.associations.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        associations = await self.associations.validate_entities(
+            client = client)
 
         if not associations:
             print("Failed associations validation.")
             return False
 
-        model_config = self.workflow_configuration.validate_entities(
-            registry_endpoint=registry_endpoint, auth=auth)
+        model_config = await self.workflow_configuration.validate_entities(
+            client = client)
 
         if not model_config:
             print("Failed workflow configuration validation.")
